@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project1.mybatis.GuestBookMapper">
+   <select id="totSize" parameterType="com.project1.book.GuestPageVo" resultType="Integer">
+      select count(sno) from guestbook 
+      where id like '%${findStr}%' or doc like '%${findStr}%' or nal like '%${findStr}%'       
+   </select>
+   
+   <select id="list" resultType="com.project1.book.GuestBookVo">
+      select * from guestbook 
+      where id like '%${findStr}%' or doc like '%${findStr}%' or nal like '%${findStr}%'   <!-- 위의 where조건과 반드시 일치해야함 -->
+      order by nal desc, id asc
+      limit #{startNo}, #{listSize}
+   </select>
+   
+   
+   <select id="select10" resultType="com.project1.book.GuestBookVo">
+      select * from guestbook 
+      order by nal desc
+      limit 0, 10
+   </select>
+   
+   <insert id="insert" parameterType="com.project1.book.GuestBookVo">
+   	insert into guestbook(id, doc, nal, pwd) values(#{id}, #{doc}, now(), #{pwd})
+   </insert>
+   
+
+   <delete id="delete" parameterType="com.project1.book.GuestBookVo">
+   	delete from guestbook where sno=#{sno} and pwd=#{pwd}
+   </delete>
+   
+   <update id="update" parameterType="com.project1.book.GuestBookVo">
+   	update guestbook set doc=#{doc} where sno=#{sno} and pwd=#{pwd}
+   </update>
+</mapper>
